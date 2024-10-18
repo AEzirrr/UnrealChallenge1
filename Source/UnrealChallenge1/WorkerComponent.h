@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// WorkerComponent.h
 
 #pragma once
 
@@ -7,24 +7,28 @@
 #include "WorkerComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class UNREALCHALLENGE1_API UWorkerComponent : public UActorComponent
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
-	UWorkerComponent();
+public:
+    // Sets default values for this component's properties
+    UWorkerComponent();
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+    // Called when the game starts
+    virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+public:
+    // Called every frame
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
+
+    UPROPERTY(EditAnywhere)
+    bool isWorkerActive;  // Controls whether the worker is active and can move
+
     // References to the Static Mesh Actors in the world
     UPROPERTY(EditAnywhere)
     AStaticMeshActor* StartMeshActor;

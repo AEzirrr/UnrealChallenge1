@@ -1,16 +1,14 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+// WorkerComponent.cpp
 
 #include "WorkerComponent.h"
+#include "Engine/StaticMeshActor.h"
+
 
 // Sets default values for this component's properties
 UWorkerComponent::UWorkerComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
 	LerpSpeed = 0.5f;
 	PauseDuration = 5.0f;
 	CurrentAlpha = 0.0f;
@@ -18,6 +16,7 @@ UWorkerComponent::UWorkerComponent()
 
 	StartMeshActor = nullptr; // No default, assign via Editor
 	EndMeshActor = nullptr;   // No default, assign via Editor
+	isWorkerActive = false;    // Default to true, you can modify it in the editor or via code
 }
 
 
@@ -26,9 +25,17 @@ void UWorkerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	// Start the movement initially
-	MoveToNextPoint();
+	if (StartMeshActor && EndMeshActor)
+	{
+		StartPoint = StartMeshActor->GetActorLocation();
+		EndPoint = EndMeshActor->GetActorLocation();
+	}
+
+	// Start movement if the worker is active
+	if (isWorkerActive)
+	{
+		MoveToNextPoint();
+	}
 }
 
 
@@ -37,9 +44,8 @@ void UWorkerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
-
-	if (!bIsPaused)
+	// Check if the worker is active and not paused before moving
+	if (isWorkerActive && !bIsPaused)
 	{
 		CurrentAlpha += LerpSpeed * DeltaTime;
 		if (CurrentAlpha >= 1.0f)
@@ -48,11 +54,8 @@ void UWorkerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		}
 		else
 		{
-			// Lerp between StartPoint and EndPoint
 			FVector NewPosition = FMath::Lerp(StartPoint, EndPoint, CurrentAlpha);
 			Worker->SetActorLocation(NewPosition);
-
-
 		}
 	}
 }
@@ -79,8 +82,11 @@ void UWorkerComponent::ResumeMovement()
 	bIsPaused = false;
 }
 
-// Start movement
+// Start movement if the worker is active
 void UWorkerComponent::MoveToNextPoint()
 {
-	bIsPaused = false;
+	if (isWorkerActive)
+	{
+		bIsPaused = false;
+	}
 }
