@@ -47,6 +47,7 @@ void UResourceTrigger::TickComponent(float DeltaTime, ELevelTick TickType, FActo
             UE_LOG(LogTemp, Warning, TEXT("TRIGGERED by %s"), *Actor->GetName());
             CurrentlyOverlappingActors.Add(Actor);
         }
+        
     }
 
     for (int32 i = CurrentlyOverlappingActors.Num() - 1; i >= 0; i--)
