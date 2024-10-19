@@ -40,6 +40,9 @@ public:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* currentStone;
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* activeSilos;
+
 private:
 	void UpdateProgressBar(UProgressBar* ProgressBar, float Current, float Max);
 	void UpdateText(UTextBlock* TextBlock, float Value);

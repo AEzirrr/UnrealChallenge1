@@ -15,6 +15,7 @@ void UHUDComponent::NativeConstruct()
 
     SetStone(InitialStone, MaxStone);
     SetWood(InitialStone, MaxStone);
+    UpdateText(activeSilos, 3.f);
 }
 
 void UHUDComponent::SetStone(float CurrentStone, float MaxStone)
