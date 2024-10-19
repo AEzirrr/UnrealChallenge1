@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Engine/TriggerVolume.h"
+#include "PlayerResourceComponent.h"
+#include "WorkerComponent.h"
 #include "GameFramework/Actor.h"
 #include "ResourceTrigger.generated.h"
 
@@ -17,6 +19,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* baseTrigger1;  // Use UBoxComponent for overlap detection
+
+	//UPROPERTY(EditAnywhere)
+	//UPlayerResourceComponent* playerReso;
 
 protected:
 	// Called when the game starts

@@ -15,6 +15,9 @@ class UNREALCHALLENGE1_API UWorkerComponent : public UActorComponent
 public:
     // Sets default values for this component's properties
     UWorkerComponent();
+    
+    UPROPERTY(EditAnywhere)
+    int Woodworker;
 
 protected:
     // Called when the game starts

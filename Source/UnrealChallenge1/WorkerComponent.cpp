@@ -13,7 +13,7 @@ UWorkerComponent::UWorkerComponent()
 
 	StartMeshActor = nullptr; 
 	EndMeshActor = nullptr;  
-	isWorkerActive = false;   
+	isWorkerActive = false;
 }
 
 
