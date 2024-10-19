@@ -1,10 +1,7 @@
-// WorkerComponent.cpp
-
 #include "WorkerComponent.h"
 #include "Engine/StaticMeshActor.h"
 
 
-// Sets default values for this component's properties
 UWorkerComponent::UWorkerComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -14,9 +11,9 @@ UWorkerComponent::UWorkerComponent()
 	CurrentAlpha = 0.0f;
 	bIsPaused = false;
 
-	StartMeshActor = nullptr; // No default, assign via Editor
-	EndMeshActor = nullptr;   // No default, assign via Editor
-	isWorkerActive = false;    // Default to true, you can modify it in the editor or via code
+	StartMeshActor = nullptr; 
+	EndMeshActor = nullptr;  
+	isWorkerActive = false;   
 }
 
 
@@ -25,13 +22,18 @@ void UWorkerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (StartMeshActor && EndMeshActor)
+
+	if (AActor* Owner = GetOwner())
 	{
-		StartPoint = StartMeshActor->GetActorLocation();
-		EndPoint = EndMeshActor->GetActorLocation();
+
+		StartPoint = Owner->GetActorLocation();
+
+		if (EndMeshActor)
+		{
+			EndPoint = EndMeshActor->GetActorLocation();
+		}
 	}
 
-	// Start movement if the worker is active
 	if (isWorkerActive)
 	{
 		MoveToNextPoint();
@@ -39,12 +41,12 @@ void UWorkerComponent::BeginPlay()
 }
 
 
+
 // Called every frame
 void UWorkerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// Check if the worker is active and not paused before moving
 	if (isWorkerActive && !bIsPaused)
 	{
 		CurrentAlpha += LerpSpeed * DeltaTime;
@@ -60,33 +62,36 @@ void UWorkerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	}
 }
 
-// Stop the movement and start the pause timer
 void UWorkerComponent::StopMovement()
 {
 	bIsPaused = true;
 
-	// Swap StartPoint and EndPoint
 	FVector TempPoint = StartPoint;
 	StartPoint = EndPoint;
 	EndPoint = TempPoint;
 
 	CurrentAlpha = 0.0f;
 
-	// Set timer for pause duration
 	GetWorld()->GetTimerManager().SetTimer(PauseTimerHandle, this, &UWorkerComponent::ResumeMovement, PauseDuration, false);
 }
 
-// Resume movement after pause
 void UWorkerComponent::ResumeMovement()
 {
 	bIsPaused = false;
 }
 
-// Start movement if the worker is active
 void UWorkerComponent::MoveToNextPoint()
 {
 	if (isWorkerActive)
 	{
+		bIsPaused = false;
+	}
+}
+
+void UWorkerComponent::ActivateWorker() 
+{
+	if (isWorkerActive == false) {
+		isWorkerActive = true;
 		bIsPaused = false;
 	}
 }
