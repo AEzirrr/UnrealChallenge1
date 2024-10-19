@@ -21,6 +21,9 @@ void UResourceTrigger::BeginPlay()
     }
 
     AActor* Owner = GetOwner();
+    APawn* thePlayer = this->GetWorld()->GetFirstPlayerController()->GetPawn();
+    //UPlayerResourceComponent* playerReso = ()->SpawnActor<UPlayerResourceComponent>();
+    //UPlayerResourceComponent* playerReso = Cast<UPlayerResourceComponent>(()->SpawnActor(UPlayerResourceComponent::StaticClass())));
 }
 
 
@@ -43,7 +46,26 @@ void UResourceTrigger::TickComponent(float DeltaTime, ELevelTick TickType, FActo
     {
         if (!CurrentlyOverlappingActors.Contains(Actor))
         {
-            // ADD WOOD IN THIS LINE
+            UWorkerComponent* Worker = Actor->FindComponentByClass<UWorkerComponent>();
+
+            if (Worker)
+            {
+                if (Worker->Woodworker == 1) {
+                    //add wood
+                    UE_LOG(LogTemp, Warning, TEXT("%s is getting wood"), *Actor->GetName())
+                    UPlayerResourceComponent::AddWood(10.f);
+                }
+                if (Worker->Woodworker == 0)
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("%s is getting stone"), *Actor->GetName())
+                    UPlayerResourceComponent::AddStone(4.f);
+                }
+            }
+            else
+            {
+                UE_LOG(LogTemp, Warning, TEXT("its null"), *Actor->GetName())
+            }
+            
             UE_LOG(LogTemp, Warning, TEXT("TRIGGERED by %s"), *Actor->GetName());
             CurrentlyOverlappingActors.Add(Actor);
         }
